@@ -1,0 +1,480 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport" />
+  <title>紅包雨</title>
+  <script type="text/javascript">
+    var deviceWidth = document.documentElement.clientWidth;
+    if (deviceWidth > 750) deviceWidth = 750;
+    document.documentElement.style.fontSize = deviceWidth / 7.5 + "px";
+  </script>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .rain-hb {
+      position: absolute;
+      /* width: 2.2rem; */
+      /* height: 2.28rem; */
+      background: url("./img/AR_envelope.png") no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .rain-hb.hb-anim {
+      -webkit-animation: rain-hbbg 10s cubic-bezier(0.4, 0, 1, 1);
+      animation: rain-hbbg 10s cubic-bezier(0.4, 0, 1, 1);
+    }
+
+    @-webkit-keyframes rain-hbbg {
+      from {
+        transform: translate(100px, -200px) rotateY(0deg) rotateX(0deg) rotateZ(0deg);
+      }
+
+      to {
+        transform: translate(-100px, 1500px) rotateY(360deg) rotateX(360deg) rotateZ(360deg);
+      }
+    }
+
+    @keyframes rain-hbbg {
+      from {
+        transform: translate(100px, -200px) rotateY(0deg) rotateX(0deg) rotateZ(0deg);
+      }
+
+      to {
+        transform: translate(-100px, 1500px) rotateY(360deg) rotateX(360deg) rotateZ(360deg);
+      }
+    }
+
+    .stop {
+      width: 50px;
+      height: 50px;
+      background-color: red;
+      position: fixed;
+      bottom: 0px;
+      text-align: center;
+      font-size: 15px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      left: 0px;
+    }
+
+    .share {
+      width: 50px;
+      height: 50px;
+      background-color: green;
+      position: fixed;
+      bottom: 0px;
+      text-align: center;
+      font-size: 15px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      right: 0px;
+    }
+
+    .camerapermission {
+      display: none;
+    }
+
+    .countdownwrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .countdown {
+      background-image: linear-gradient(to right, #b23bda, #ee6999);
+      width: 100px;
+      height: 30px;
+      position: absolute;
+      top: 20px;
+      border-radius: 50px;
+      font-size: 22px;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .totalscorewrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .totalscore {
+      background-image: linear-gradient(to right, #b23bda, #ee6999);
+      width: 120px;
+      height: 30px;
+      position: absolute;
+      bottom: 30px;
+      border-radius: 50px;
+      font-size: 22px;
+      text-align: center;
+      color: #fee79e;
+    }
+
+    .resultwrapperwrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      display: none;
+    }
+
+    .resultwrapper {
+      position: absolute;
+      width: 250px;
+      height: 270px;
+      background-color: #ffffff;
+      border-radius: 15px;
+      top: 20%;
+      text-align: center;
+      box-shadow: 2px 2px 5px gray;
+    }
+
+    .result {
+      background-image: linear-gradient(to right, #b23bda, #ee6999);
+      width: 120px;
+      height: 30px;
+      margin: 10px;
+      border-radius: 15px;
+      margin: 10 auto;
+      font-size: 20px;
+      font-weight: bold;
+      color: #fee79e;
+      box-shadow: 1px 1px 2px gray;
+    }
+
+    .coupon {
+      background-image: linear-gradient(to right, #b23bda, #ee6999);
+      width: 150px;
+      height: 75px;
+      margin: 10px;
+      border-radius: 15px;
+      margin: 10 auto;
+      font-size: 20px;
+      font-weight: bold;
+      color: #fee79e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      box-shadow: 1px 1px 2px gray;
+    }
+
+    .clicktoget {
+      background-image: linear-gradient(to right, #b23bda, #ee6999);
+      width: 120px;
+      height: 30px;
+      font-size: 14px;
+      margin: 10px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fee79e;
+      margin: 10 auto;
+      box-shadow: 1px 1px 2px gray;
+    }
+
+    .gradient-text {
+      font-weight: bold;
+      /* text-shadow: 10px 10px 10px black; */
+      background-image: linear-gradient(to right, #b23bda, #ee6999);
+      background-size: 100%;
+      background-repeat: repeat;
+      font-size: 40px;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -moz-background-clip: text;
+      -moz-text-fill-color: transparent;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="countdownwrapper">
+    <div id="countdown" class="countdown">600 秒</div>
+  </div>
+
+  <div id="divshowthemoney">
+    <div id="showthemoney"></div>
+  </div>
+
+
+
+  <div class="resultwrapperwrapper" id="resultwrapperwrapper">
+    <div class="resultwrapper" id="resultwrapper">
+      <div class="gradient-text">神乎其技</div>
+      <div id="result" class="result"></div>
+      <div style="font-size: 20px; font-weight: bold; letter-spacing: 5px">
+        恭喜獲得現金紅包!
+      </div>
+      <div id="coupon" class="coupon"></div>
+      <div id="clicktoget" class="clicktoget">點擊下載優惠券</div>
+    </div>
+  </div>
+
+  <div class="main-rain" id="main-rain">
+    <!-- <div class="money" id="money"></div> -->
+    <div class="redPack" id="redPack"></div>
+  </div>
+
+  <!-- <div id="stop" class="stop">不玩了</div> -->
+  <div class="totalscorewrapper">
+    <div id="totalscore" class="totalscore">得分 : 0</div>
+  </div>
+  <!-- <div id="share" class="share">分享</div> -->
+
+  <!-- <canvas class="center_div2"  id="scratch" width="0" height="0"></canvas> -->
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://libs.zappar.com/zappar-threejs/2.0.1/zappar-threejs.js"></script>
+<script type="module" src="demo01.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+  crossorigin="anonymous"></script>
+<script type="text/javascript" src="./js/redRain.js"></script>
+<script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<!-- LIFF CDN -->
+<script src="https://libs.zappar.com/zappar-snapshot/0.0.18/zappar-snapshot.min.js"></script>
+<script>
+  var total = 0;
+
+  window.onload = function () {
+    var redRain = new createRain({
+      duration: 60000,
+    });
+
+    timeLeft = 600;
+
+    function countdown() {
+      timeLeft--;
+      document.getElementById("countdown").innerHTML =
+        String(timeLeft) + "秒";
+      if (timeLeft > 0) {
+        setTimeout(countdown, 1000);
+      } else if (timeLeft == 0) {
+        // alert("時間到");
+        document.getElementById("redPack").style.display = "none";
+        // alert("總得分 : " + total);
+        document.getElementById("result").innerHTML = "得分 : " + total;
+        document.getElementById("coupon").innerHTML =
+          parseInt(total / 3) +
+          "元現金" +
+          "<br>" +
+          "<span style='color:#FEEEBC;'>抵用券</span>";
+        document.getElementById("resultwrapperwrapper").style.display =
+          "flex";
+      }
+    }
+    setTimeout(countdown, 1000);
+  };
+  var price;
+  document.getElementById("redPack").addEventListener("click", function () {
+
+  });
+
+
+  // 生成金額
+  function showmemoney(a, b) {
+
+    price = Math.round(Math.random() * 100);
+    const newDiv = document.createElement("div");
+    newDiv.setAttribute("id", "showthemoney");
+    document.getElementById("showthemoney").style.display = "block";
+    document.getElementById("divshowthemoney").appendChild(newDiv);
+    document.getElementById("showthemoney").style.top = parseInt(event.pageY) + parseInt(a);
+    document.getElementById("showthemoney").style.left = parseInt(event.pageX) - parseInt(b);
+    document.getElementById("showthemoney").style.position = "absolute";
+    document.getElementById("showthemoney").style.color = "yellow";
+    document.getElementById("showthemoney").style.whiteSpace = "nowrap";
+    document.getElementById("showthemoney").style.zIndex = "2";
+
+    document.getElementById("showthemoney").innerHTML = "+" + price;
+    $("#showthemoney").fadeOut(1000);
+
+    total += price;
+    document.getElementById("totalscore").innerHTML = "得分 : " + total;
+  }
+
+
+
+  function clickEffect() {
+
+    let balls = [];
+    let longPressed = false;
+    let longPress;
+    let multiplier = 0;
+    let width, height;
+    let origin;
+    let normal;
+    let ctx;
+    const colours = ["#F73859", "#14FFEC", "#00E0FF", "#FF99FE", "#FAF15D"];
+    const canvas = document.createElement("canvas");
+    document.body.appendChild(canvas);
+    canvas.setAttribute(
+      "style",
+      "width: 100%; height: 100%; top: 0; left: 0; z-index: 99999; position: fixed; pointer-events: none;"
+    );
+    const pointer = document.createElement("span");
+    pointer.classList.add("pointer");
+    document.body.appendChild(pointer);
+
+    if (canvas.getContext && window.addEventListener) {
+      ctx = canvas.getContext("2d");
+      updateSize();
+      window.addEventListener("resize", updateSize, false);
+      loop();
+      window.addEventListener(
+        "mousedown",
+        function (e) {
+          pushBalls(randBetween(10, 20), e.clientX, e.clientY);
+          document.body.classList.add("is-pressed");
+          longPress = setTimeout(function () {
+            document.body.classList.add("is-longpress");
+            longPressed = true;
+          }, 500);
+        },
+        false
+      );
+      window.addEventListener(
+        "mouseup",
+        function (e) {
+          clearInterval(longPress);
+          if (longPressed == true) {
+            document.body.classList.remove("is-longpress");
+            pushBalls(
+              randBetween(
+                50 + Math.ceil(multiplier),
+                100 + Math.ceil(multiplier)
+              ),
+              e.clientX,
+              e.clientY
+            );
+            longPressed = false;
+          }
+          document.body.classList.remove("is-pressed");
+        },
+        false
+      );
+      window.addEventListener(
+        "mousemove",
+        function (e) {
+          let x = e.clientX;
+          let y = e.clientY;
+          pointer.style.top = y + "px";
+          pointer.style.left = x + "px";
+        },
+        false
+      );
+    } else {
+      console.log("canvas or addEventListener is unsupported!");
+    }
+
+    function updateSize() {
+      canvas.width = window.innerWidth * 2;
+      canvas.height = window.innerHeight * 2;
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      ctx.scale(2, 2);
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      origin = {
+        x: width / 2,
+        y: height / 2,
+      };
+      normal = {
+        x: width / 2,
+        y: height / 2,
+      };
+    }
+    class Ball {
+      constructor(x = origin.x, y = origin.y) {
+        this.x = x;
+        this.y = y;
+        this.angle = Math.PI * 2 * Math.random();
+        if (longPressed == true) {
+          this.multiplier = randBetween(14 + multiplier, 15 + multiplier);
+        } else {
+          this.multiplier = randBetween(3, 6);
+        }
+        this.vx =
+          (this.multiplier + Math.random() * 0.5) * Math.cos(this.angle);
+        this.vy =
+          (this.multiplier + Math.random() * 0.5) * Math.sin(this.angle);
+        this.r = randBetween(4, 6) + 3 * Math.random();
+        this.color = colours[Math.floor(Math.random() * colours.length)];
+      }
+      update() {
+        this.x += this.vx - normal.x;
+        this.y += this.vy - normal.y;
+        normal.x = (-2 / window.innerWidth) * Math.sin(this.angle);
+        normal.y = (-2 / window.innerHeight) * Math.cos(this.angle);
+        this.r -= 0.3;
+        this.vx *= 0.9;
+        this.vy *= 0.9;
+      }
+    }
+
+    function pushBalls(count = 1, x = origin.x, y = origin.y) {
+      for (let i = 0; i < count; i++) {
+        balls.push(new Ball(x, y));
+      }
+    }
+
+    function randBetween(min, max) {
+      return Math.floor(Math.random() * max) + min;
+    }
+
+    function loop() {
+      ctx.fillStyle = "rgba(255, 255, 255, 0)";
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < balls.length; i++) {
+        let b = balls[i];
+        if (b.r < 0) continue;
+        ctx.fillStyle = b.color;
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2, false);
+        ctx.fill();
+        b.update();
+      }
+      if (longPressed == true) {
+        multiplier += 0.2;
+      } else if (!longPressed && multiplier >= 0) {
+        multiplier -= 0.4;
+      }
+      removeBall();
+      requestAnimationFrame(loop);
+    }
+
+    function removeBall() {
+      for (let i = 0; i < balls.length; i++) {
+        let b = balls[i];
+        if (
+          b.x + b.r < 0 ||
+          b.x - b.r > width ||
+          b.y + b.r < 0 ||
+          b.y - b.r > height ||
+          b.r < 0
+        ) {
+          balls.splice(i, 1);
+        }
+      }
+    }
+  }
+  clickEffect(); // 調用特效函數
+</script>
+
+</html>
